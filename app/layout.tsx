@@ -25,9 +25,18 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased relative min-h-screen text-white`}
         suppressHydrationWarning
       >
+        {/* Fixed Background Image */}
+        <div
+          className="fixed inset-0 z-[-2] bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: "url('/images/race-bg.jpg')" }}
+        />
+
+        {/* Dark Overlay for Readability */}
+        <div className="fixed inset-0 z-[-1] bg-black/60 backdrop-blur-[2px]" />
+
         {children}
       </body>
     </html>
