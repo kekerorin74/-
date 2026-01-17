@@ -1,0 +1,55 @@
+@import "tailwindcss";
+@source "../app";
+@source "../components";
+
+@theme {
+  --color-antigravity-bg: #020410;
+  --color-antigravity-card: #0a0a1f;
+  --color-antigravity-accent: #00f3ff;
+  --color-antigravity-purple: #bd00ff;
+  --color-antigravity-text: #e0e0e0;
+  --color-antigravity-muted: #6b7280;
+  --color-antigravity-glass: rgba(10, 10, 31, 0.7);
+}
+
+:root {
+  --background: #020410;
+  --foreground: #e0e0e0;
+}
+
+body {
+  color: var(--foreground);
+  background: radial-gradient(circle at 50% 0%, #1a1a2e 0%, #020410 80%);
+  background-attachment: fixed;
+  font-family: "Meiryo UI", "Meiryo", sans-serif;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* Tech Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #020410;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #00f3ff;
+  border-radius: 0px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #bd00ff;
+}
+
+@layer utilities {
+  .text-glow {
+    text-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
+  }
+
+  .box-glow {
+    box-shadow: 0 0 20px rgba(0, 243, 255, 0.1);
+  }
+}
