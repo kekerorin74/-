@@ -31,8 +31,10 @@ export default async function Home() {
             <h1 className="text-5xl md:text-8xl font-black tracking-tighter text-white text-glow drop-shadow-[0_0_30px_rgba(0,243,255,0.6)] mb-4">
               堅軸馬＆妙味馬
             </h1>
-            <p className="text-xs md:text-xl text-antigravity-text/80 font-bold tracking-wider text-glow whitespace-nowrap">
-              堅軸馬：能力上位で3着内率が最も高い想定の馬　妙味馬：期待値の高い馬
+            <p className="text-xs md:text-xl text-antigravity-text/80 font-bold tracking-wider text-glow">
+              <span className="block md:inline">堅軸馬：能力上位で3着内率が最も高い想定の馬</span>
+              <span className="hidden md:inline">　</span>
+              <span className="block md:inline">妙味馬：期待値の高い馬</span>
             </p>
           </div>
         </div>

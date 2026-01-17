@@ -6,7 +6,7 @@ export async function POST(request: Request) {
         const { password } = await request.json();
 
         // In a real application, this should be an environment variable
-        if (password === (process.env.ADMIN_PASSWORD || 'Seityan19')) {
+        if (password === (process.env.ADMIN_PASSWORD || 'paladion55')) {
             const cookieStore = await cookies();
             cookieStore.set('antigravity_session', 'true', {
                 httpOnly: true,
