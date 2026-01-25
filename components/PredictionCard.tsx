@@ -41,8 +41,8 @@ export default function PredictionCard({ prediction }: { prediction: Prediction 
                             <Trophy size={40} />
                         </div>
                         <p className="text-gray-500 text-xs font-bold mb-1 tracking-widest uppercase">堅軸馬</p>
-                        <div className="flex items-end gap-2">
-                            <p className="text-3xl md:text-4xl lg:text-5xl font-black text-white tracking-wide leading-none whitespace-nowrap overflow-hidden text-ellipsis">
+                        <div className="flex flex-wrap items-end gap-x-3 gap-y-1">
+                            <p className="text-2xl md:text-3xl lg:text-5xl font-black text-white tracking-wide leading-none break-words max-w-full">
                                 {prediction.firm_horse}
                             </p>
                             {prediction.firm_horse_result && (
@@ -54,14 +54,13 @@ export default function PredictionCard({ prediction }: { prediction: Prediction 
                     </div>
 
                     {/* Bottom Tier: Value Horses (3 Columns) */}
-                    {/* PC: 3 Columns, Mobile: 3 Columns (with smaller text) or 1? User requested "Horizontal 3 items". Let's try 3 cols even on mobile but handle overflow. */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         {/* Value Horse 1 */}
                         {prediction.value_horse_1 && (
                             <div className="bg-black/40 p-4 rounded-lg border-l-4 border-antigravity-accent group/item hover:bg-antigravity-accent/10 transition-colors relative overflow-hidden">
-                                <p className="text-gray-500 text--[10px] font-bold mb-1 tracking-widest uppercase">妙味馬</p>
-                                <div className="flex items-end gap-2">
-                                    <p className="text-xl md:text-2xl font-black text-white tracking-wide leading-none whitespace-nowrap overflow-hidden text-ellipsis">
+                                <p className="text-gray-500 text-[10px] font-bold mb-1 tracking-widest uppercase">妙味馬</p>
+                                <div className="flex flex-wrap items-end gap-x-2 gap-y-1">
+                                    <p className="text-lg md:text-2xl font-black text-white tracking-wide leading-none break-words max-w-full">
                                         {prediction.value_horse_1}
                                     </p>
                                     {prediction.value_horse_1_result && (
@@ -77,8 +76,8 @@ export default function PredictionCard({ prediction }: { prediction: Prediction 
                         {prediction.value_horse_2 && (
                             <div className="bg-black/40 p-4 rounded-lg border-l-4 border-antigravity-accent group/item hover:bg-antigravity-accent/10 transition-colors relative overflow-hidden">
                                 <p className="text-gray-500 text-[10px] font-bold mb-1 tracking-widest uppercase">妙味馬</p>
-                                <div className="flex items-end gap-2">
-                                    <p className="text-xl md:text-2xl font-black text-white tracking-wide leading-none whitespace-nowrap overflow-hidden text-ellipsis">
+                                <div className="flex flex-wrap items-end gap-x-2 gap-y-1">
+                                    <p className="text-lg md:text-2xl font-black text-white tracking-wide leading-none break-words max-w-full">
                                         {prediction.value_horse_2}
                                     </p>
                                     {prediction.value_horse_2_result && (
@@ -94,8 +93,8 @@ export default function PredictionCard({ prediction }: { prediction: Prediction 
                         {prediction.value_horse_3 && (
                             <div className="bg-black/40 p-4 rounded-lg border-l-4 border-antigravity-accent group/item hover:bg-antigravity-accent/10 transition-colors relative overflow-hidden">
                                 <p className="text-gray-500 text-[10px] font-bold mb-1 tracking-widest uppercase">妙味馬</p>
-                                <div className="flex items-end gap-2">
-                                    <p className="text-xl md:text-2xl font-black text-white tracking-wide leading-none whitespace-nowrap overflow-hidden text-ellipsis">
+                                <div className="flex flex-wrap items-end gap-x-2 gap-y-1">
+                                    <p className="text-lg md:text-2xl font-black text-white tracking-wide leading-none break-words max-w-full">
                                         {prediction.value_horse_3}
                                     </p>
                                     {prediction.value_horse_3_result && (
