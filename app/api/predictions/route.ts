@@ -23,11 +23,26 @@ export async function POST(request: Request) {
 
     try {
         const body = await request.json();
-        const { race_date, race_name, firm_horse, value_horse_1, value_horse_2, value_horse_3 } = body;
+        const {
+            race_date, race_name, firm_horse, firm_horse_result,
+            value_horse_1, value_horse_1_result,
+            value_horse_2, value_horse_2_result,
+            value_horse_3, value_horse_3_result
+        } = body;
 
         await db.sql`
-          INSERT INTO predictions (race_date, race_name, firm_horse, value_horse_1, value_horse_2, value_horse_3)
-          VALUES (${race_date}, ${race_name}, ${firm_horse}, ${value_horse_1 || null}, ${value_horse_2 || null}, ${value_horse_3 || null})
+          INSERT INTO predictions (
+            race_date, race_name, firm_horse, firm_horse_result,
+            value_horse_1, value_horse_1_result,
+            value_horse_2, value_horse_2_result,
+            value_horse_3, value_horse_3_result
+          )
+          VALUES (
+            ${race_date}, ${race_name}, ${firm_horse}, ${firm_horse_result || null},
+            ${value_horse_1 || null}, ${value_horse_1_result || null},
+            ${value_horse_2 || null}, ${value_horse_2_result || null},
+            ${value_horse_3 || null}, ${value_horse_3_result || null}
+          )
         `;
 
         return NextResponse.json({ success: true });
@@ -65,11 +80,26 @@ export async function PUT(request: Request) {
 
     try {
         const body = await request.json();
-        const { id, race_date, race_name, firm_horse, value_horse_1, value_horse_2, value_horse_3 } = body;
+        const {
+            id, race_date, race_name, firm_horse, firm_horse_result,
+            value_horse_1, value_horse_1_result,
+            value_horse_2, value_horse_2_result,
+            value_horse_3, value_horse_3_result
+        } = body;
 
         await db.sql`
           UPDATE predictions 
-          SET race_date = ${race_date}, race_name = ${race_name}, firm_horse = ${firm_horse}, value_horse_1 = ${value_horse_1}, value_horse_2 = ${value_horse_2}, value_horse_3 = ${value_horse_3}
+          SET 
+            race_date = ${race_date}, 
+            race_name = ${race_name}, 
+            firm_horse = ${firm_horse}, 
+            firm_horse_result = ${firm_horse_result || null},
+            value_horse_1 = ${value_horse_1}, 
+            value_horse_1_result = ${value_horse_1_result || null}, 
+            value_horse_2 = ${value_horse_2}, 
+            value_horse_2_result = ${value_horse_2_result || null}, 
+            value_horse_3 = ${value_horse_3},
+            value_horse_3_result = ${value_horse_3_result || null}
           WHERE id = ${id}
         `;
 

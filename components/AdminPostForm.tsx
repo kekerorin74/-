@@ -7,9 +7,13 @@ export default function AdminPostForm() {
         race_date: '',
         race_name: '',
         firm_horse: '',
+        firm_horse_result: '',
         value_horse_1: '',
+        value_horse_1_result: '',
         value_horse_2: '',
+        value_horse_2_result: '',
         value_horse_3: '',
+        value_horse_3_result: '',
     });
     const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
     const [predictions, setPredictions] = useState<any[]>([]);
@@ -42,9 +46,13 @@ export default function AdminPostForm() {
             race_date: prediction.race_date,
             race_name: prediction.race_name,
             firm_horse: prediction.firm_horse,
+            firm_horse_result: prediction.firm_horse_result || '',
             value_horse_1: prediction.value_horse_1 || '',
+            value_horse_1_result: prediction.value_horse_1_result || '',
             value_horse_2: prediction.value_horse_2 || '',
+            value_horse_2_result: prediction.value_horse_2_result || '',
             value_horse_3: prediction.value_horse_3 || '',
+            value_horse_3_result: prediction.value_horse_3_result || '',
         });
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
@@ -55,9 +63,13 @@ export default function AdminPostForm() {
             race_date: '',
             race_name: '',
             firm_horse: '',
+            firm_horse_result: '',
             value_horse_1: '',
+            value_horse_1_result: '',
             value_horse_2: '',
+            value_horse_2_result: '',
             value_horse_3: '',
+            value_horse_3_result: '',
         });
     };
 
@@ -82,9 +94,13 @@ export default function AdminPostForm() {
                     race_date: '',
                     race_name: '',
                     firm_horse: '',
+                    firm_horse_result: '',
                     value_horse_1: '',
+                    value_horse_1_result: '',
                     value_horse_2: '',
+                    value_horse_2_result: '',
                     value_horse_3: '',
+                    value_horse_3_result: '',
                 });
                 fetchPredictions(); // Refresh list
                 setTimeout(() => setStatus('idle'), 3000);
@@ -151,44 +167,84 @@ export default function AdminPostForm() {
 
                         <div className="mb-4">
                             <label className="block text-gray-400 text-sm mb-1">堅軸 (Firm Axis)</label>
-                            <input
-                                type="text"
-                                name="firm_horse"
-                                placeholder="14 モリノドリーム"
-                                value={formData.firm_horse}
-                                onChange={handleChange}
-                                required
-                                className="w-full bg-gray-900 border border-antigravity-purple/50 rounded-lg p-4 text-lg text-white focus:border-antigravity-purple outline-none"
-                            />
+                            <div className="flex gap-2">
+                                <input
+                                    type="text"
+                                    name="firm_horse"
+                                    placeholder="14 モリノドリーム"
+                                    value={formData.firm_horse}
+                                    onChange={handleChange}
+                                    required
+                                    className="flex-1 bg-gray-900 border border-antigravity-purple/50 rounded-lg p-4 text-lg text-white focus:border-antigravity-purple outline-none"
+                                />
+                                <input
+                                    type="text"
+                                    name="firm_horse_result"
+                                    placeholder="結果 (例: 1着)"
+                                    value={formData.firm_horse_result}
+                                    onChange={handleChange}
+                                    className="w-24 bg-gray-900 border border-antigravity-purple/50 rounded-lg p-4 text-center text-red-500 font-bold focus:border-antigravity-purple outline-none"
+                                />
+                            </div>
                         </div>
 
                         <div className="space-y-3">
                             <label className="block text-gray-400 text-sm mb-1">妙味 (Value Horses)</label>
-                            <input
-                                type="text"
-                                name="value_horse_1"
-                                placeholder="2 ティニア"
-                                value={formData.value_horse_1}
-                                onChange={handleChange}
-                                required
-                                className="w-full bg-gray-900 border border-antigravity-accent/50 rounded-lg p-4 text-lg text-white focus:border-antigravity-accent outline-none"
-                            />
-                            <input
-                                type="text"
-                                name="value_horse_2"
-                                placeholder="10 ウイングレイテスト"
-                                value={formData.value_horse_2}
-                                onChange={handleChange}
-                                className="w-full bg-gray-900 border border-antigravity-accent/30 rounded-lg p-4 text-lg text-white focus:border-antigravity-accent outline-none"
-                            />
-                            <input
-                                type="text"
-                                name="value_horse_3"
-                                placeholder="5 ユキマル"
-                                value={formData.value_horse_3}
-                                onChange={handleChange}
-                                className="w-full bg-gray-900 border border-antigravity-accent/30 rounded-lg p-4 text-lg text-white focus:border-antigravity-accent outline-none"
-                            />
+                            <div className="flex gap-2">
+                                <input
+                                    type="text"
+                                    name="value_horse_1"
+                                    placeholder="2 ティニア"
+                                    value={formData.value_horse_1}
+                                    onChange={handleChange}
+                                    required
+                                    className="flex-1 bg-gray-900 border border-antigravity-accent/50 rounded-lg p-4 text-lg text-white focus:border-antigravity-accent outline-none"
+                                />
+                                <input
+                                    type="text"
+                                    name="value_horse_1_result"
+                                    placeholder="結果"
+                                    value={formData.value_horse_1_result}
+                                    onChange={handleChange}
+                                    className="w-24 bg-gray-900 border border-antigravity-accent/50 rounded-lg p-4 text-center text-red-500 font-bold focus:border-antigravity-accent outline-none"
+                                />
+                            </div>
+                            <div className="flex gap-2">
+                                <input
+                                    type="text"
+                                    name="value_horse_2"
+                                    placeholder="10 ウイングレイテスト"
+                                    value={formData.value_horse_2}
+                                    onChange={handleChange}
+                                    className="flex-1 bg-gray-900 border border-antigravity-accent/30 rounded-lg p-4 text-lg text-white focus:border-antigravity-accent outline-none"
+                                />
+                                <input
+                                    type="text"
+                                    name="value_horse_2_result"
+                                    placeholder="結果"
+                                    value={formData.value_horse_2_result}
+                                    onChange={handleChange}
+                                    className="w-24 bg-gray-900 border border-antigravity-accent/30 rounded-lg p-4 text-center text-red-500 font-bold focus:border-antigravity-accent outline-none"
+                                />
+                            </div>
+                            <div className="flex gap-2">
+                                <input
+                                    type="text"
+                                    name="value_horse_3"
+                                    placeholder="5 ユキマル"
+                                    value={formData.value_horse_3}
+                                    onChange={handleChange}
+                                    className="flex-1 bg-gray-900 border border-antigravity-accent/30 rounded-lg p-4 text-lg text-white focus:border-antigravity-accent outline-none"
+                                />
+                                <input
+                                    type="text"
+                                    name="value_horse_3_result"
+                                    placeholder="結果"
+                                    value={formData.value_horse_3_result}
+                                    onChange={handleChange}
+                                    className="w-24 bg-gray-900 border border-antigravity-accent/30 rounded-lg p-4 text-center text-red-500 font-bold focus:border-antigravity-accent outline-none"
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>

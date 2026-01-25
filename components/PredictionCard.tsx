@@ -5,9 +5,13 @@ interface Prediction {
     race_date: string;
     race_name: string;
     firm_horse: string;
+    firm_horse_result?: string;
     value_horse_1: string;
+    value_horse_1_result?: string;
     value_horse_2?: string;
+    value_horse_2_result?: string;
     value_horse_3?: string;
+    value_horse_3_result?: string;
 }
 
 export default function PredictionCard({ prediction }: { prediction: Prediction }) {
@@ -37,9 +41,16 @@ export default function PredictionCard({ prediction }: { prediction: Prediction 
                             <Trophy size={40} />
                         </div>
                         <p className="text-gray-500 text-xs font-bold mb-1 tracking-widest uppercase">堅軸馬</p>
-                        <p className="text-3xl md:text-4xl lg:text-5xl font-black text-white tracking-wide leading-none whitespace-nowrap overflow-hidden text-ellipsis">
-                            {prediction.firm_horse}
-                        </p>
+                        <div className="flex items-end gap-2">
+                            <p className="text-3xl md:text-4xl lg:text-5xl font-black text-white tracking-wide leading-none whitespace-nowrap overflow-hidden text-ellipsis">
+                                {prediction.firm_horse}
+                            </p>
+                            {prediction.firm_horse_result && (
+                                <span className="text-red-500 font-bold text-xl md:text-2xl whitespace-nowrap animate-pulse">
+                                    {prediction.firm_horse_result}
+                                </span>
+                            )}
+                        </div>
                     </div>
 
                     {/* Bottom Tier: Value Horses (3 Columns) */}
@@ -48,10 +59,17 @@ export default function PredictionCard({ prediction }: { prediction: Prediction 
                         {/* Value Horse 1 */}
                         {prediction.value_horse_1 && (
                             <div className="bg-black/40 p-4 rounded-lg border-l-4 border-antigravity-accent group/item hover:bg-antigravity-accent/10 transition-colors relative overflow-hidden">
-                                <p className="text-gray-500 text-[10px] font-bold mb-1 tracking-widest uppercase">妙味馬</p>
-                                <p className="text-xl md:text-2xl font-black text-white tracking-wide leading-none whitespace-nowrap overflow-hidden text-ellipsis">
-                                    {prediction.value_horse_1}
-                                </p>
+                                <p className="text-gray-500 text--[10px] font-bold mb-1 tracking-widest uppercase">妙味馬</p>
+                                <div className="flex items-end gap-2">
+                                    <p className="text-xl md:text-2xl font-black text-white tracking-wide leading-none whitespace-nowrap overflow-hidden text-ellipsis">
+                                        {prediction.value_horse_1}
+                                    </p>
+                                    {prediction.value_horse_1_result && (
+                                        <span className="text-red-500 font-bold text-lg whitespace-nowrap">
+                                            {prediction.value_horse_1_result}
+                                        </span>
+                                    )}
+                                </div>
                             </div>
                         )}
 
@@ -59,9 +77,16 @@ export default function PredictionCard({ prediction }: { prediction: Prediction 
                         {prediction.value_horse_2 && (
                             <div className="bg-black/40 p-4 rounded-lg border-l-4 border-antigravity-accent group/item hover:bg-antigravity-accent/10 transition-colors relative overflow-hidden">
                                 <p className="text-gray-500 text-[10px] font-bold mb-1 tracking-widest uppercase">妙味馬</p>
-                                <p className="text-xl md:text-2xl font-black text-white tracking-wide leading-none whitespace-nowrap overflow-hidden text-ellipsis">
-                                    {prediction.value_horse_2}
-                                </p>
+                                <div className="flex items-end gap-2">
+                                    <p className="text-xl md:text-2xl font-black text-white tracking-wide leading-none whitespace-nowrap overflow-hidden text-ellipsis">
+                                        {prediction.value_horse_2}
+                                    </p>
+                                    {prediction.value_horse_2_result && (
+                                        <span className="text-red-500 font-bold text-lg whitespace-nowrap">
+                                            {prediction.value_horse_2_result}
+                                        </span>
+                                    )}
+                                </div>
                             </div>
                         )}
 
@@ -69,9 +94,16 @@ export default function PredictionCard({ prediction }: { prediction: Prediction 
                         {prediction.value_horse_3 && (
                             <div className="bg-black/40 p-4 rounded-lg border-l-4 border-antigravity-accent group/item hover:bg-antigravity-accent/10 transition-colors relative overflow-hidden">
                                 <p className="text-gray-500 text-[10px] font-bold mb-1 tracking-widest uppercase">妙味馬</p>
-                                <p className="text-xl md:text-2xl font-black text-white tracking-wide leading-none whitespace-nowrap overflow-hidden text-ellipsis">
-                                    {prediction.value_horse_3}
-                                </p>
+                                <div className="flex items-end gap-2">
+                                    <p className="text-xl md:text-2xl font-black text-white tracking-wide leading-none whitespace-nowrap overflow-hidden text-ellipsis">
+                                        {prediction.value_horse_3}
+                                    </p>
+                                    {prediction.value_horse_3_result && (
+                                        <span className="text-red-500 font-bold text-lg whitespace-nowrap">
+                                            {prediction.value_horse_3_result}
+                                        </span>
+                                    )}
+                                </div>
                             </div>
                         )}
                     </div>
