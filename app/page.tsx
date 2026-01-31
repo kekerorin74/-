@@ -22,11 +22,17 @@ export default async function Home() {
           <h1 className="text-5xl md:text-8xl font-black tracking-tighter text-white text-glow drop-shadow-[0_0_30px_rgba(0,243,255,0.6)] mb-4">
             堅軸馬＆妙味馬
           </h1>
-          <p className="text-xs md:text-xl text-antigravity-text/80 font-bold tracking-wider text-glow">
+          <p className="text-xs md:text-xl text-antigravity-text/80 font-bold tracking-wider text-glow mt-2">
             <span className="block md:inline">堅軸馬：能力上位で3着内率が最も高い想定の馬</span>
             <span className="hidden md:inline">　</span>
             <span className="block md:inline">妙味馬：期待値の高い馬</span>
           </p>
+
+          <div className="mt-8">
+            <a href="/archive" className="inline-block px-8 py-3 rounded-full border border-antigravity-accent/50 text-antigravity-accent hover:bg-antigravity-accent hover:text-black transition-all duration-300 text-sm font-bold tracking-widest backdrop-blur-sm">
+              過去の予想（アーカイブ）
+            </a>
+          </div>
         </div>
       </div>
 
