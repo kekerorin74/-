@@ -16,6 +16,12 @@ interface Prediction {
     value_horse_2_result?: string;
     value_horse_3?: string;
     value_horse_3_result?: string;
+    // Payout Fields for Stats
+    firm_payout_win?: number;
+    firm_payout_place?: number;
+    value_1_payout_place?: number;
+    value_2_payout_place?: number;
+    value_3_payout_place?: number;
 }
 
 export default async function ArchivePage() {
@@ -38,6 +44,68 @@ export default async function ArchivePage() {
 
     const dates = Object.keys(groupedPredictions);
 
+    // Calculate Stats
+    let totalFirm = 0;
+    let firmWinHits = 0;
+    let firmPlaceHits = 0;
+    let totalWinPayout = 0;
+    let totalPlacePayoutFirm = 0; // For Firm Only? Or Overall?
+    // Request asked for: "Win Recovery" (Firm) and "Place Recovery" (Overall?)
+    // Let's assume Win Recovery = Firm Only. Place Recovery = All Horses? 
+    // Usually "Place Recovery" implies predicting Place. 
+    // Let's calculate: Firm Win Recovery & Firm Place Rate & "Value" Recovery?
+    // Request Text: "単勝回収率(Win Div / Count)", "複勝回収率(Place Div / Count)"
+    // Let's assume strictly Firm Horse for Win, and Firm+Value for Place? 
+    // Or just Firm for both? "堅軸馬と妙味馬の2つのセクションに分け" -> Separate stats! Great.
+
+    // Firm Stats
+    let firmInvest = 0; // 100yen per race
+    let firmWinReturn = 0;
+    let firmPlaceReturn = 0;
+
+    // Value Stats
+    let valueInvest = 0; // 100yen per valid horse
+    let valuePlaceReturn = 0;
+    let valuePlaceHits = 0;
+    let totalValueHorses = 0;
+
+    predictions.forEach(p => {
+        // Firm
+        if (p.firm_horse) {
+            totalFirm++;
+            firmInvest += 100;
+            if (p.firm_horse_result === '1着') firmWinHits++;
+            if (['1着', '2着', '3着'].includes(p.firm_horse_result || '')) firmPlaceHits++;
+
+            if (p.firm_payout_win) firmWinReturn += p.firm_payout_win;
+            if (p.firm_payout_place) firmPlaceReturn += p.firm_payout_place;
+        }
+
+        // Value
+        [
+            { name: p.value_horse_1, res: p.value_horse_1_result, pay: p.value_1_payout_place },
+            { name: p.value_horse_2, res: p.value_horse_2_result, pay: p.value_2_payout_place },
+            { name: p.value_horse_3, res: p.value_horse_3_result, pay: p.value_3_payout_place },
+        ].forEach(v => {
+            if (v.name) {
+                totalValueHorses++;
+                valueInvest += 100;
+                if (['1着', '2着', '3着'].includes(v.res || '')) {
+                    valuePlaceHits++;
+                    if (v.pay) valuePlaceReturn += v.pay;
+                }
+            }
+        });
+    });
+
+    const firmWinRate = totalFirm ? Math.round((firmWinHits / totalFirm) * 100) : 0;
+    const firmPlaceRate = totalFirm ? Math.round((firmPlaceHits / totalFirm) * 100) : 0;
+    const firmWinRecovery = firmInvest ? Math.round((firmWinReturn / firmInvest) * 100) : 0;
+    const firmPlaceRecovery = firmInvest ? Math.round((firmPlaceReturn / firmInvest) * 100) : 0;
+
+    const valuePlaceRate = totalValueHorses ? Math.round((valuePlaceHits / totalValueHorses) * 100) : 0;
+    const valuePlaceRecovery = valueInvest ? Math.round((valuePlaceReturn / valueInvest) * 100) : 0;
+
     return (
         <main className="min-h-screen flex flex-col text-white pb-20">
             {/* Header / Nav */}
@@ -52,6 +120,53 @@ export default async function ArchivePage() {
                         過去の予想一覧
                     </span>
                 </h1>
+
+                {/* Performance Dashboard */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+                    {/* Firm Horse Stats */}
+                    <div className="bg-gradient-to-br from-antigravity-purple/20 to-black border border-antigravity-purple/50 rounded-xl p-6">
+                        <h3 className="text-xl font-bold text-white mb-4 flex items-center">
+                            <Trophy className="text-antigravity-purple mr-2" size={24} />
+                            堅軸馬 成績
+                        </h3>
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="bg-black/40 p-3 rounded-lg text-center">
+                                <p className="text-gray-400 text-xs mb-1">単勝回収率</p>
+                                <p className={`text-2xl font-black ${firmWinRecovery > 100 ? 'text-red-500' : 'text-white'}`}>{firmWinRecovery}%</p>
+                            </div>
+                            <div className="bg-black/40 p-3 rounded-lg text-center">
+                                <p className="text-gray-400 text-xs mb-1">複勝回収率</p>
+                                <p className={`text-2xl font-black ${firmPlaceRecovery > 100 ? 'text-red-500' : 'text-white'}`}>{firmPlaceRecovery}%</p>
+                            </div>
+                            <div className="bg-black/40 p-3 rounded-lg text-center">
+                                <p className="text-gray-400 text-xs mb-1">勝率 (1着)</p>
+                                <p className="text-2xl font-black text-white">{firmWinRate}%</p>
+                            </div>
+                            <div className="bg-black/40 p-3 rounded-lg text-center">
+                                <p className="text-gray-400 text-xs mb-1">複勝率 (3着内)</p>
+                                <p className="text-2xl font-black text-white">{firmPlaceRate}%</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Value Horse Stats */}
+                    <div className="bg-gradient-to-br from-antigravity-accent/20 to-black border border-antigravity-accent/50 rounded-xl p-6">
+                        <h3 className="text-xl font-bold text-white mb-4 flex items-center">
+                            <Trophy className="text-antigravity-accent mr-2" size={24} />
+                            妙味馬 成績
+                        </h3>
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="bg-black/40 p-3 rounded-lg text-center col-span-2">
+                                <p className="text-gray-400 text-xs mb-1">複勝回収率</p>
+                                <p className={`text-3xl font-black ${valuePlaceRecovery > 100 ? 'text-red-500' : 'text-white'}`}>{valuePlaceRecovery}%</p>
+                            </div>
+                            <div className="bg-black/40 p-3 rounded-lg text-center col-span-2">
+                                <p className="text-gray-400 text-xs mb-1">複勝率 (3着内)</p>
+                                <p className="text-3xl font-black text-white">{valuePlaceRate}%</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div className="container mx-auto px-4 max-w-6xl">
