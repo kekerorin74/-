@@ -1,9 +1,7 @@
 import Link from 'next/link';
 import { Trophy, Calendar, ArrowLeft } from 'lucide-react';
 import db from '@/lib/db';
-
 export const dynamic = 'force-dynamic';
-
 interface Prediction {
     id: number;
     race_date: string;
@@ -23,7 +21,6 @@ interface Prediction {
     value_2_payout_place?: number;
     value_3_payout_place?: number;
 }
-
 export default async function ArchivePage() {
     let predictions: Prediction[] = [];
     try {
@@ -32,7 +29,6 @@ export default async function ArchivePage() {
     } catch (e) {
         console.error('Database connection failed', e);
     }
-
     // Group by Date
     const groupedPredictions: { [key: string]: Prediction[] } = {};
     predictions.forEach(p => {
@@ -41,34 +37,21 @@ export default async function ArchivePage() {
         }
         groupedPredictions[p.race_date].push(p);
     });
-
     const dates = Object.keys(groupedPredictions);
-
     // Calculate Stats
     let totalFirm = 0;
     let firmWinHits = 0;
     let firmPlaceHits = 0;
-    let totalWinPayout = 0;
-    let totalPlacePayoutFirm = 0; // For Firm Only? Or Overall?
-    // Request asked for: "Win Recovery" (Firm) and "Place Recovery" (Overall?)
-    // Let's assume Win Recovery = Firm Only. Place Recovery = All Horses? 
-    // Usually "Place Recovery" implies predicting Place. 
-    // Let's calculate: Firm Win Recovery & Firm Place Rate & "Value" Recovery?
-    // Request Text: "単勝回収率(Win Div / Count)", "複勝回収率(Place Div / Count)"
-    // Let's assume strictly Firm Horse for Win, and Firm+Value for Place? 
-    // Or just Firm for both? "堅軸馬と妙味馬の2つのセクションに分け" -> Separate stats! Great.
-
     // Firm Stats
     let firmInvest = 0; // 100yen per race
     let firmWinReturn = 0;
     let firmPlaceReturn = 0;
-
+    
     // Value Stats
     let valueInvest = 0; // 100yen per valid horse
     let valuePlaceReturn = 0;
     let valuePlaceHits = 0;
     let totalValueHorses = 0;
-
     predictions.forEach(p => {
         // Firm
         if (p.firm_horse) {
@@ -76,11 +59,10 @@ export default async function ArchivePage() {
             firmInvest += 100;
             if (p.firm_horse_result === '1着') firmWinHits++;
             if (['1着', '2着', '3着'].includes(p.firm_horse_result || '')) firmPlaceHits++;
-
+            
             if (p.firm_payout_win) firmWinReturn += p.firm_payout_win;
             if (p.firm_payout_place) firmPlaceReturn += p.firm_payout_place;
         }
-
         // Value
         [
             { name: p.value_horse_1, res: p.value_horse_1_result, pay: p.value_1_payout_place },
@@ -97,15 +79,12 @@ export default async function ArchivePage() {
             }
         });
     });
-
     const firmWinRate = totalFirm ? Math.round((firmWinHits / totalFirm) * 100) : 0;
     const firmPlaceRate = totalFirm ? Math.round((firmPlaceHits / totalFirm) * 100) : 0;
     const firmWinRecovery = firmInvest ? Math.round((firmWinReturn / firmInvest) * 100) : 0;
     const firmPlaceRecovery = firmInvest ? Math.round((firmPlaceReturn / firmInvest) * 100) : 0;
-
     const valuePlaceRate = totalValueHorses ? Math.round((valuePlaceHits / totalValueHorses) * 100) : 0;
     const valuePlaceRecovery = valueInvest ? Math.round((valuePlaceReturn / valueInvest) * 100) : 0;
-
     return (
         <main className="min-h-screen flex flex-col text-white pb-20">
             {/* Header / Nav */}
@@ -120,7 +99,6 @@ export default async function ArchivePage() {
                         過去の予想一覧
                     </span>
                 </h1>
-
                 {/* Performance Dashboard */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
                     {/* Firm Horse Stats */}
@@ -148,7 +126,6 @@ export default async function ArchivePage() {
                             </div>
                         </div>
                     </div>
-
                     {/* Value Horse Stats */}
                     <div className="bg-gradient-to-br from-antigravity-accent/20 to-black border border-antigravity-accent/50 rounded-xl p-6">
                         <h3 className="text-xl font-bold text-white mb-4 flex items-center">
@@ -168,7 +145,6 @@ export default async function ArchivePage() {
                     </div>
                 </div>
             </div>
-
             <div className="container mx-auto px-4 max-w-6xl">
                 {dates.map((date) => (
                     <div key={date} className="mb-16">
@@ -177,7 +153,6 @@ export default async function ArchivePage() {
                             <Calendar className="text-antigravity-accent" />
                             <h2 className="text-2xl font-bold tracking-wider">{date}</h2>
                         </div>
-
                         {/* Grid of Races for this Date */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                             {groupedPredictions[date].map((pred) => (
@@ -189,7 +164,6 @@ export default async function ArchivePage() {
                                             {pred.race_name}
                                         </h3>
                                     </div>
-
                                     {/* Table Content */}
                                     <div className="p-2">
                                         <table className="w-full text-sm md:text-base border-collapse">
@@ -202,7 +176,6 @@ export default async function ArchivePage() {
                                                         {pred.firm_horse_result}
                                                     </td>
                                                 </tr>
-
                                                 {/* Value Horse 1 */}
                                                 <tr className="border-b border-gray-700/50">
                                                     <td className="p-2 text-gray-500 w-20">妙味馬 1</td>
@@ -211,7 +184,6 @@ export default async function ArchivePage() {
                                                         {pred.value_horse_1_result}
                                                     </td>
                                                 </tr>
-
                                                 {/* Value Horse 2 */}
                                                 {pred.value_horse_2 && (
                                                     <tr className="border-b border-gray-700/50">
@@ -222,7 +194,6 @@ export default async function ArchivePage() {
                                                         </td>
                                                     </tr>
                                                 )}
-
                                                 {/* Value Horse 3 */}
                                                 {pred.value_horse_3 && (
                                                     <tr>
