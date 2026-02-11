@@ -41,6 +41,7 @@ export default async function ArchivePage() {
     // Calculate Stats
     let totalFirm = 0;
     let firmWinHits = 0;
+    let firmRenTaiHits = 0; // Top 2
     let firmPlaceHits = 0;
 
     // Value Stats
@@ -51,6 +52,7 @@ export default async function ArchivePage() {
         if (p.firm_horse && p.firm_horse !== 'なし') {
             totalFirm++;
             if (p.firm_horse_result === '1着') firmWinHits++;
+            if (['1着', '2着'].includes(p.firm_horse_result || '')) firmRenTaiHits++;
             if (['1着', '2着', '3着'].includes(p.firm_horse_result || '')) firmPlaceHits++;
         }
         // Value
@@ -68,6 +70,7 @@ export default async function ArchivePage() {
         });
     });
     const firmWinRate = totalFirm ? Math.round((firmWinHits / totalFirm) * 100) : 0;
+    const firmRenTaiRate = totalFirm ? Math.round((firmRenTaiHits / totalFirm) * 100) : 0;
     const firmPlaceRate = totalFirm ? Math.round((firmPlaceHits / totalFirm) * 100) : 0;
     const valuePlaceRate = totalValueHorses ? Math.round((valuePlaceHits / totalValueHorses) * 100) : 0;
     return (
@@ -92,14 +95,18 @@ export default async function ArchivePage() {
                             <Trophy className="text-antigravity-purple mr-2" size={24} />
                             堅軸馬 成績
                         </h3>
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-3 gap-4">
                             <div className="bg-black/40 p-3 rounded-lg text-center">
                                 <p className="text-gray-400 text-xs mb-1">勝率 (1着)</p>
-                                <p className="text-3xl font-black text-white">{firmWinRate}%</p>
+                                <p className="text-2xl md:text-3xl font-black text-white">{firmWinRate}%</p>
+                            </div>
+                            <div className="bg-black/40 p-3 rounded-lg text-center">
+                                <p className="text-gray-400 text-xs mb-1">連対率 (2着内)</p>
+                                <p className="text-2xl md:text-3xl font-black text-white">{firmRenTaiRate}%</p>
                             </div>
                             <div className="bg-black/40 p-3 rounded-lg text-center">
                                 <p className="text-gray-400 text-xs mb-1">複勝率 (3着内)</p>
-                                <p className="text-3xl font-black text-white">{firmPlaceRate}%</p>
+                                <p className="text-2xl md:text-3xl font-black text-white">{firmPlaceRate}%</p>
                             </div>
                         </div>
                     </div>
