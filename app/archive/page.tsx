@@ -42,49 +42,34 @@ export default async function ArchivePage() {
     let totalFirm = 0;
     let firmWinHits = 0;
     let firmPlaceHits = 0;
-    // Firm Stats
-    let firmInvest = 0; // 100yen per race
-    let firmWinReturn = 0;
-    let firmPlaceReturn = 0;
-    
+
     // Value Stats
-    let valueInvest = 0; // 100yen per valid horse
-    let valuePlaceReturn = 0;
     let valuePlaceHits = 0;
     let totalValueHorses = 0;
     predictions.forEach(p => {
         // Firm
-        if (p.firm_horse) {
+        if (p.firm_horse && p.firm_horse !== 'なし') {
             totalFirm++;
-            firmInvest += 100;
             if (p.firm_horse_result === '1着') firmWinHits++;
             if (['1着', '2着', '3着'].includes(p.firm_horse_result || '')) firmPlaceHits++;
-            
-            if (p.firm_payout_win) firmWinReturn += p.firm_payout_win;
-            if (p.firm_payout_place) firmPlaceReturn += p.firm_payout_place;
         }
         // Value
         [
-            { name: p.value_horse_1, res: p.value_horse_1_result, pay: p.value_1_payout_place },
-            { name: p.value_horse_2, res: p.value_horse_2_result, pay: p.value_2_payout_place },
-            { name: p.value_horse_3, res: p.value_horse_3_result, pay: p.value_3_payout_place },
+            { name: p.value_horse_1, res: p.value_horse_1_result },
+            { name: p.value_horse_2, res: p.value_horse_2_result },
+            { name: p.value_horse_3, res: p.value_horse_3_result },
         ].forEach(v => {
-            if (v.name) {
+            if (v.name && v.name !== 'なし') {
                 totalValueHorses++;
-                valueInvest += 100;
                 if (['1着', '2着', '3着'].includes(v.res || '')) {
                     valuePlaceHits++;
-                    if (v.pay) valuePlaceReturn += v.pay;
                 }
             }
         });
     });
     const firmWinRate = totalFirm ? Math.round((firmWinHits / totalFirm) * 100) : 0;
     const firmPlaceRate = totalFirm ? Math.round((firmPlaceHits / totalFirm) * 100) : 0;
-    const firmWinRecovery = firmInvest ? Math.round((firmWinReturn / firmInvest) * 100) : 0;
-    const firmPlaceRecovery = firmInvest ? Math.round((firmPlaceReturn / firmInvest) * 100) : 0;
     const valuePlaceRate = totalValueHorses ? Math.round((valuePlaceHits / totalValueHorses) * 100) : 0;
-    const valuePlaceRecovery = valueInvest ? Math.round((valuePlaceReturn / valueInvest) * 100) : 0;
     return (
         <main className="min-h-screen flex flex-col text-white pb-20">
             {/* Header / Nav */}
@@ -109,20 +94,12 @@ export default async function ArchivePage() {
                         </h3>
                         <div className="grid grid-cols-2 gap-4">
                             <div className="bg-black/40 p-3 rounded-lg text-center">
-                                <p className="text-gray-400 text-xs mb-1">単勝回収率</p>
-                                <p className={`text-2xl font-black ${firmWinRecovery > 100 ? 'text-red-500' : 'text-white'}`}>{firmWinRecovery}%</p>
-                            </div>
-                            <div className="bg-black/40 p-3 rounded-lg text-center">
-                                <p className="text-gray-400 text-xs mb-1">複勝回収率</p>
-                                <p className={`text-2xl font-black ${firmPlaceRecovery > 100 ? 'text-red-500' : 'text-white'}`}>{firmPlaceRecovery}%</p>
-                            </div>
-                            <div className="bg-black/40 p-3 rounded-lg text-center">
                                 <p className="text-gray-400 text-xs mb-1">勝率 (1着)</p>
-                                <p className="text-2xl font-black text-white">{firmWinRate}%</p>
+                                <p className="text-3xl font-black text-white">{firmWinRate}%</p>
                             </div>
                             <div className="bg-black/40 p-3 rounded-lg text-center">
                                 <p className="text-gray-400 text-xs mb-1">複勝率 (3着内)</p>
-                                <p className="text-2xl font-black text-white">{firmPlaceRate}%</p>
+                                <p className="text-3xl font-black text-white">{firmPlaceRate}%</p>
                             </div>
                         </div>
                     </div>
@@ -132,12 +109,8 @@ export default async function ArchivePage() {
                             <Trophy className="text-antigravity-accent mr-2" size={24} />
                             妙味馬 成績
                         </h3>
-                        <div className="grid grid-cols-2 gap-4">
-                            <div className="bg-black/40 p-3 rounded-lg text-center col-span-2">
-                                <p className="text-gray-400 text-xs mb-1">複勝回収率</p>
-                                <p className={`text-3xl font-black ${valuePlaceRecovery > 100 ? 'text-red-500' : 'text-white'}`}>{valuePlaceRecovery}%</p>
-                            </div>
-                            <div className="bg-black/40 p-3 rounded-lg text-center col-span-2">
+                        <div className="grid grid-cols-1 gap-4">
+                            <div className="bg-black/40 p-3 rounded-lg text-center">
                                 <p className="text-gray-400 text-xs mb-1">複勝率 (3着内)</p>
                                 <p className="text-3xl font-black text-white">{valuePlaceRate}%</p>
                             </div>
