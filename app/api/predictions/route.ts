@@ -45,33 +45,9 @@ export async function POST(request: Request) {
           )
         `;
 
-        return NextResponse.json({ success: true });
-        race_date, race_name,
-            firm_horse, firm_horse_id, firm_horse_result, // Add IDs
-            value_horse_1, value_horse_1_id, value_horse_1_result,
-            value_horse_2, value_horse_2_id, value_horse_2_result,
-            value_horse_3, value_horse_3_id, value_horse_3_result
-    } = body;
-
-    await db.sql`
-            INSERT INTO predictions (
-                race_date, race_name,
-                firm_horse, firm_horse_id, firm_horse_result,
-                value_horse_1, value_horse_1_id, value_horse_1_result,
-                value_horse_2, value_horse_2_id, value_horse_2_result,
-                value_horse_3, value_horse_3_id, value_horse_3_result
-            ) VALUES (
-                ${race_date}, ${race_name},
-                ${firm_horse}, ${firm_horse_id}, ${firm_horse_result},
-                ${value_horse_1}, ${value_horse_1_id}, ${value_horse_1_result},
-                ${value_horse_2}, ${value_horse_2_id}, ${value_horse_2_result},
-                ${value_horse_3}, ${value_horse_3_id}, ${value_horse_3_result}
-            );
-        `;
-    return NextResponse.json({ success: true });
-} catch (e: any) {
-    return NextResponse.json({ error: e.message }, { status: 500 });
-}
+    } catch (e: any) {
+        return NextResponse.json({ error: e.message }, { status: 500 });
+    }
 }
 
 export async function DELETE(request: Request) {

@@ -300,9 +300,9 @@ export default function AdminPostForm() {
                     disabled={status === 'loading'}
                     className={`w - full py - 4 rounded - xl font - bold text - lg shadow - lg transition - all ${
     status === 'success' ? 'bg-green-500 text-black' :
-    status === 'error' ? 'bg-red-500 text-white' :
-        editingId ? 'bg-orange-500 text-white hover:bg-orange-400' : // Edit mode style
-            'bg-antigravity-accent text-black hover:bg-cyan-400 shadow-[0_0_25px_rgba(0,243,255,0.4)]'
+        status === 'error' ? 'bg-red-500 text-white' :
+            editingId ? 'bg-orange-500 text-white hover:bg-orange-400' : // Edit mode style
+                'bg-antigravity-accent text-black hover:bg-cyan-400 shadow-[0_0_25px_rgba(0,243,255,0.4)]'
 } `}
                 >
                     {status === 'loading' ? 'Sending...' :
