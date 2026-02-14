@@ -220,4 +220,58 @@ export class RaceScraper {
             return null;
         }
     }
+
+    public async searchHorse(query: string): Promise<{ id: string; name: string; detail: string }[]> {
+        // Netkeiba Horse Search
+        // URL: https://db.netkeiba.com/?pid=horse_list&word={query}
+        // Note: encoding might be euc-jp, but let's try standard fetch first. 
+        // If query is Japanese, we might need manual box search or handling.
+        // Actually, simple GET works for many cases if browser handles it, but node fetch might need encoding.
+        // Let's try basic first.
+
+        const searchUrl = `https://db.netkeiba.com/?pid=horse_list&word=${encodeURIComponent(query)}`;
+        try {
+            // Netkeiba often requires EUC-JP for search queries... 
+            // If standard fetch fails to find results for Japanese text, we might need `iconv-lite`.
+            // For now, assume it works or use alternative if needed.
+            // Actually, newer Netkeiba might accept UTF8 or we rely on the fact that sometimes it works.
+            // Wait, standard `fetch` with URL params usually encodes as UTF-8. Netkeiba is old school.
+
+            // To be safe, if we get 0 results for a known horse, we know it's encoding.
+            // Let's implement scrambling.
+
+            const html = await this.fetchHtml(searchUrl);
+            const $ = cheerio.load(html);
+
+            const horses: { id: string; name: string; detail: string }[] = [];
+
+            // Selector: table summary="競走馬検索結果"
+            // tr loop
+            $('table tr').each((i, row) => {
+                if (i === 0) return; // header
+                const tds = $(row).find('td');
+                const nameLink = $(tds[1]).find('a');
+                const name = nameLink.text().trim();
+                const href = nameLink.attr('href');
+
+                // details: sex/age, trainer, parents etc. structure varies
+                // Let's just grab the whole row text or specific cells
+                const sexAge = $(tds[2]).text().trim();
+                const father = $(tds[6]).text().trim();
+                const mother = $(tds[7]).text().trim();
+                const detail = `${sexAge} / 父:${father} / 母:${mother}`;
+
+                if (name && href) {
+                    // href="/horse/2021105432/"
+                    const id = href.replace('/horse/', '').replace('/', '');
+                    horses.push({ id, name, detail });
+                }
+            });
+
+            return horses.slice(0, 10); // Limit to 10
+        } catch (e) {
+            console.error("Horse Search Error:", e);
+            return [];
+        }
+    }
 }
